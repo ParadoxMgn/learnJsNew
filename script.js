@@ -1,7 +1,6 @@
 'use strict';
 
-function getQuest() {
-  let countTry = 10;
+function getQuest(countTry) {
 
   const getRandomNum = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -13,58 +12,56 @@ function getQuest() {
     return !isNaN(parseFloat(num)) && isFinite(num);
   };
 
-  const isNull = function (argNull) {
-    return argNull === null;
-  };
-
-  const isTrim = function (argTrim) {
-    return argTrim.trim() !== argTrim;
+  const checkQuest = function (questContinue) {
+    if (confirm(`${questContinue}отите сыграть еще?`)) {
+      return getQuest(10);
+    } else {
+      return alert('Игра окончена');
+    }
   };
 
   const testTry = function (moreLess) {
     countTry--;
     if (countTry === 0) {
-      const endTryLess = confirm('Попытки закончились, хотите сыграть еще?');
-      if (endTryLess) {
-        getQuest();
-      } else {
-        alert('Игра окончена');
-      }
-    } else {
+      return checkQuest('Попытки закончились, х');
+    }
+    if (countTry > 0) {
       alert(`Загаданное число ${moreLess}, осталось ${countTry} попыток`);
-      testQuest();
+      return testQuest();
     }
   };
 
   const testQuest = function () {
+    console.log(randNum);
     const someNum = prompt('Угадай число от 1 до 100');
-    if (isNull(someNum)) {
-      alert('Игра окончена');
-    } else if (!isNumber(someNum)) {
+    if (someNum === null) {
+      console.log(someNum);
+      return alert('Игра окончена!!!');
+    }
+    if (!isNumber(someNum)) {
       alert('Введи число!');
-      testQuest();
-    } else if (isTrim(someNum)) {
+      return testQuest();
+    }
+    if (someNum.trim() !== someNum) {
       alert('Введи число без пробелов!');
-      testQuest();
-    } else if (!(someNum >= 1 && someNum <= 100)) {
+      return testQuest();
+    }
+    if (!(+someNum >= 1 && +someNum <= 100)) {
       alert('Введи число от 1 до 100!');
-      testQuest();
-    } else {
-      if (someNum > randNum) {
-        testTry('меньше');
-      } else if (someNum < randNum) {
-        testTry('больше');
-      } else {
-        const questFinish = confirm('Поздравляю, Вы угадали!!! Хотели бы сыграть еще?');
-        if (questFinish) {
-          getQuest();
-        } else {
-          alert('Игра окончена');
-        }
-      }
+      return testQuest();
+    }
+    if (+someNum > randNum) {
+      return testTry('меньше');
+    }
+    if (+someNum < randNum) {
+      return testTry('больше');
+    }
+    if (+someNum === randNum) {
+      console.log('Поздравляю, Вы угадали!!!');
+      return checkQuest('Поздравляю, Вы угадали!!! Х');
     }
   };
   testQuest();
 }
 
-getQuest();
+getQuest(10);
